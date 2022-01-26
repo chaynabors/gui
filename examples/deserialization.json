@@ -1,0 +1,24 @@
+{
+  "label": "container",
+  "transform": {
+    "position": [
+      0.0,
+      0.0
+    ],
+    "size": {
+      "Dynamic": {
+        "width": 0.5,
+        "height": 0.5
+      }
+    },
+    "pivot": "MiddleCenter"
+  },
+  "widgets": [
+    {
+      "Text": {
+        "label": "text",
+        "text": "Hello World!"
+      }
+    }
+  ]
+}
