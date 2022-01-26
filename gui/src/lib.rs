@@ -1,5 +1,6 @@
 pub mod command;
-pub mod container;
-pub mod pivot;
+pub mod event;
+pub mod instance;
+pub mod position;
 pub mod size;
 pub mod widget;
