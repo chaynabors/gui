@@ -1,5 +1,5 @@
-use gui::instance::Instance;
-use gui::widget::Widget;
+use gui::Instance;
+use gui::Widget;
 
 fn main() {
     let mut instance = Instance::new();

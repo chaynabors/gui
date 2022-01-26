@@ -4,6 +4,7 @@ use std::fmt::Display;
 use serde::Deserialize;
 use serde::Serialize;
 
+use crate::Size;
 use crate::command::Command;
 use crate::event::Event;
 use crate::widget::Widget;
@@ -16,6 +17,10 @@ pub struct Instance {
     widgets: Vec<Widget>,
     #[serde(skip)]
     event_queue: VecDeque<Event>,
+    #[serde(skip)]
+    resolution: Size,
+    #[serde(skip)]
+    scale_factor: f64,
 }
 
 impl Instance {
@@ -49,11 +54,19 @@ impl Instance {
     /// # Arguments
     ///
     /// - `command` - The command to process
-    pub fn process_command<'a>(&'a mut self, command: Command) -> &'a mut Self {
+    pub fn process_command(&mut self, command: Command) {
         match command {
+            Command::Resized { width, height } => self.resolution = Size::Fixed { width, height },
+            Command::ScaleFactorChanged { scale_factor } => self.scale_factor = scale_factor,
             _ => todo!("Unhandled command: {command:?}"),
         }
-        self
+    }
+
+    /// Retrieve an event from the internal event buffer.
+    ///
+    /// If there are no events, this will return `Option::None`
+    pub fn get_event(&mut self) -> Option<Event> {
+        self.event_queue.pop_front()
     }
 }
 

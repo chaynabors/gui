@@ -1,7 +1,6 @@
 use wgpu::SurfaceConfiguration;
 
-struct Renderer {
-    surface_configuration: &SurfaceConfiguration
+pub struct Renderer {
 }
 
 impl Renderer {

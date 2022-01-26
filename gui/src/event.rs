@@ -2,6 +2,8 @@ use serde::Deserialize;
 use serde::Serialize;
 
 /// A type for describing emitted events.
+///
+/// This is the primary way for the library to communicate with other applications.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum Event {
     /// Emitted when a button has been pressed.
