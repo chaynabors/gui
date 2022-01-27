@@ -14,7 +14,7 @@ use crate::widget::Widget;
 /// It is also a converging point for widget events
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Instance {
-    widgets: Vec<Widget>,
+    pub widgets: Vec<Widget>,
     #[serde(skip)]
     event_queue: VecDeque<Event>,
     #[serde(skip)]

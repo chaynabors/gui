@@ -5,8 +5,6 @@ use std::path::PathBuf;
 /// This is the preferred means for handling state changes.
 #[derive(Clone, Debug)]
 pub enum Command<'a> {
-    /// A command to redraw the current gui frame.
-    Redraw,
     /// A command for resizing the gui.
     Resized {
         ///

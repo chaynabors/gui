@@ -40,7 +40,6 @@ impl EventHandler {
                 },
                 _ => (),
             },
-            Event::RedrawRequested(_) => instance.process_command(Command::Redraw),
             _ => (),
         }
     }

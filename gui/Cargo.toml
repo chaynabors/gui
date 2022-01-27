@@ -2,6 +2,7 @@
 name = "gui"
 version = "0.1.0"
 edition = "2021"
+resolver = "2"
 
 [dependencies]
 serde = { version = "1.0.136", features = ["derive"] }
