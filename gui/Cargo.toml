@@ -1,6 +1,6 @@
 [package]
 name = "gui"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 resolver = "2"
 
@@ -8,9 +8,4 @@ resolver = "2"
 serde = { version = "1.0.136", features = ["derive"] }
 
 [dev-dependencies]
-gui_wgpu = { path = "../gui_wgpu" }
-gui_winit = { path = "../gui_winit" }
-tokio = { version = "1.15.0", features = ["full"] }
 serde_json = "1.0.78"
-wgpu = "0.12.0"
-winit = "0.26.1"

@@ -1,33 +1,42 @@
-use serde::Deserialize;
-use serde::Serialize;
+use std::path::PathBuf;
 
-/// A type for describing emitted events.
+/// A command type for altering the gui state indirectly.
 ///
-/// This is the primary way for the library to communicate with other applications.
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub enum Event {
-    /// Emitted when a button has been pressed.
-    ButtonPressed {
+/// This is the preferred means for handling state changes.
+#[derive(Clone, Debug)]
+pub enum Event<'a> {
+    /// A command for when a file has been dropped onto the gui
+    ///
+    /// It's likely that the easiest way to supply this command is per file.
+    /// 
+    /// In such a case, it's the preferred method.
+    DroppedFile {
         ///
-        label: String,
+        path: &'a PathBuf,
     },
-    /// Emitted when the button comes into focus
-    /// either by the cursor hovering over it or it being selected by some other means
-    /// e.g. a controller navigates to the button using a cursor.
-    ButtonFocused {
+    /// A command for when a file is being hovered over the gui.
+    ///
+    /// This will likely be supplied per file being hovered.
+    HoveredFile {
         ///
-        label: String,
+        path: &'a PathBuf,
     },
-    /// Emitted when the button comes out of focus
-    /// either by the cursor hovering off of it or it being deselected by some other means
-    /// e.g. a controller navigates somewhere else.
-    ButtonUnfocused {
+    /// A command which reverts any hovered file state changes.
+    HoveredFileCanceled,
+    /// A command which updates the position of the cursor.
+    ///
+    /// This command must supply the cursor position in physical coordinates.
+    CursorMoved {
         ///
-        label: String,
-    },
-    /// Emitted when a button has been released.
-    ButtonReleased {
+        x: u32,
         ///
-        label: String,
+        y: u32,
     },
+    /// A command describing the state of a mouse button
+    MouseButton {
+        ///
+        button: u16,
+        ///
+        pressed: bool,
+    }
 }

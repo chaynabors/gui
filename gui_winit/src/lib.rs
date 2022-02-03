@@ -1,4 +1,4 @@
-use gui::Command;
+use gui::Container;
 use winit::event::ElementState;
 use winit::event::Event;
 use winit::event::MouseButton;
@@ -11,36 +11,33 @@ impl EventHandler {
         Self
     }
 
-    pub fn process_event(&mut self, instance: &mut gui::Instance, event: &Event<()>) {
-        match event {
-            Event::WindowEvent { event, .. } => match event {
-                WindowEvent::Resized(size) => instance.process_command(Command::Resized { width: size.width, height: size.height }),
-                WindowEvent::DroppedFile(path) => instance.process_command(Command::DroppedFile { path }),
-                WindowEvent::HoveredFile(path) => instance.process_command(Command::HoveredFile { path }),
-                WindowEvent::HoveredFileCancelled => instance.process_command(Command::HoveredFileCanceled),
-                WindowEvent::CursorMoved { position, .. } => instance.process_command(Command::CursorMoved { x: position.x as u32, y: position.y as u32 }),
-                WindowEvent::MouseInput { state, button, .. } => {
-                    let button = match button {
-                        MouseButton::Left => 0,
-                        MouseButton::Right => 1,
-                        MouseButton::Middle => 2,
-                        MouseButton::Other(n) => *n,
-                    };
+    pub fn process_event(&mut self, gui: &mut [Container], event: &Event<()>) {
+        for container in gui {
+            match event {
+                Event::WindowEvent { event, .. } => match event {
+                    WindowEvent::DroppedFile(path) => container.process_event(gui::Event::DroppedFile { path }),
+                    WindowEvent::HoveredFile(path) => container.process_event(gui::Event::HoveredFile { path }),
+                    WindowEvent::HoveredFileCancelled => container.process_event(gui::Event::HoveredFileCanceled),
+                    WindowEvent::CursorMoved { position, .. } => container.process_event(gui::Event::CursorMoved { x: position.x as u32, y: position.y as u32 }),
+                    WindowEvent::MouseInput { state, button, .. } => {
+                        let button = match button {
+                            MouseButton::Left => 0,
+                            MouseButton::Right => 1,
+                            MouseButton::Middle => 2,
+                            MouseButton::Other(n) => *n,
+                        };
 
-                    let pressed = match state {
-                        ElementState::Pressed => true,
-                        ElementState::Released => false,
-                    };
+                        let pressed = match state {
+                            ElementState::Pressed => true,
+                            ElementState::Released => false,
+                        };
 
-                    instance.process_command(Command::MouseButton { button, pressed });
-                },
-                WindowEvent::ScaleFactorChanged { scale_factor, new_inner_size } => {
-                    instance.process_command(Command::ScaleFactorChanged { scale_factor: *scale_factor });
-                    instance.process_command(Command::Resized { width: new_inner_size.width, height: new_inner_size.height });
+                        container.process_event(gui::Event::MouseButton { button, pressed });
+                    },
+                    _ => (),
                 },
                 _ => (),
-            },
-            _ => (),
+            }
         }
     }
 }
